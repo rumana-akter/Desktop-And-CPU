@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>My first three.js app</title>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+
+
+
+<body>
+    <script src="js/three.js"></script>
+
+
+
+    <script id="vertexShader" type="x-shader/x-vertex">
+        // projectionMatrix, modelViewMatrix, position -> passed in from Three.js
+        varying vec3 v_color;
+        void main()	{
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            v_color = position;
+        }
+    </script>
+
+    <script id="vertexShader1" type="x-shader/x-vertex">
+        // projectionMatrix, modelViewMatrix, position -> passed in from Three.js
+        varying vec3 v_color;
+        void main()	{
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            v_color = position;
+        }
+    </script>
+
+    <script id="fragmentShader" type="x-shader/x-fragment">
+    
+        uniform float u_time;
+        varying vec3 v_color;
+        void main()	{
+           
+            gl_FragColor = vec4(abs(cos(v_color+u_time)), 1.0);
+        }
+    </script>
+    <script id="fragmentShader1" type="x-shader/x-fragment">
+    
+        uniform float u_time;
+        varying vec3 v_color;
+        void main()	{
+           
+            gl_FragColor = vec4(abs(cos(v_color+u_time)), 1.0);
+        }
+    </script>
+
+
+
+
+
+
+    
+
+    
+    
+
+
+
+
+
+
+
+    <script>
+        let scene,camera,renderer,cube;
+        var light1,light2,light3;
+
+        
+      
+      function init()
+        {
+            
+        
+
+         scene = new THREE.Scene();
+
+         
+
+        var shift=0.1;
+        renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+        renderer.setClearColor(0xffffff, 1);
+        renderer.clear();
+
+        
+
+        //new new THREE.PerspectiveCamera(FOV, viewAspectRatio, zNear, zFar)
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        
+       
+        //width', 'height', and 'depth'
+        const geometry = new THREE.BoxGeometry(3, 3, 2);
+        
+
+        
+
+        const geometry1 = new THREE.PlaneGeometry( 5, 5 ,1);
+        const material1 = new THREE.MeshBasicMaterial( {color: 0x000000, side: THREE.DoubleSide} );
+        const plane = new THREE.Mesh( geometry1, material1 );
+        scene.add( plane );
+
+        const texture = new THREE.TextureLoader().load('Windows_10.png');
+        
+        //shder2
+        var start = Date.now();
+        uniforms = {
+            u_time: { type: "f", value: (Date.now() - start)/1000 }
+        };
+
+        //shader2
+        material6 = new THREE.ShaderMaterial({
+            uniforms: uniforms,
+            vertexShader1: document.getElementById('vertexShader1').textContent,
+            fragmentShader1: document.getElementById('fragmentShader1').textContent
+
+        });
+
+        const cube6 = new THREE.Mesh(geometry, material6);
+
+        const material = new THREE.MeshPhongMaterial({
+            map: texture
+        });
+
+        function animate2() {
+            requestAnimationFrame(animate2);
+            uniforms["u_time"].value = (Date.now() - start)/1000;
+            //cube5.rotation.y += 0.01;
+            //renderer.render(scene, camera);
+
+            
+        };
+        
+        animate2();
+        
+        cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+
+        const geometry2 = new THREE.PlaneGeometry(.5,1.4, 2);
+        const material2 = new THREE.MeshBasicMaterial( {color: 0x000000, side: THREE.DoubleSide} );
+        const plane1 = new THREE.Mesh(geometry2, material2);
+        //cube.position.set(1, 0, -2);
+        //cube.scale.set(2, 2, 2);
+
+        plane1.position.y -= 2.5;
+        scene.add(plane1);
+
+     
+        const geometry3 = new THREE.PlaneGeometry(3,0.7, 2);
+        const material3 = new THREE.MeshBasicMaterial( {color: 0x000000, side: THREE.DoubleSide} );
+        const plane2 = new THREE.Mesh(geometry3, material3);
+        //cube.position.set(1, 0, -2);
+        //cube.scale.set(2, 2, 2);
+
+        plane2.position.y -= 3.5;
+        scene.add(plane2);
+
+       
+
+        light1 = new THREE.PointLight( 0xff0040, 7, 50 );
+		scene.add( light1 );
+
+	    light2 = new THREE.PointLight( 0x0040ff, 9, 50 );
+		scene.add( light2 );
+
+	    light3 = new THREE.PointLight( 0x80ff80, 11, 50 );
+		scene.add( light3 );
+        
+        animate();
+        
+        renderer.render(scene, camera);
+        
+
+
+        
+
+    }
+
+
+    function animate() {
+            lightsoource();
+            
+            requestAnimationFrame(animate);
+            //cube.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        };
+
+        
+    
+
+    
+
+    function lightsoource()
+    {
+ 
+        
+		   var time1=Date.now()*.005;
+		   light1.position.x=Math.sin(time1*.7)*30;
+		   light1.position.y=Math.sin(time1*.5)*40;
+		   light1.position.z=Math.sin(time1*.3)*30;
+		   
+		      light2.position.x=Math.sin(time1*.3)*30;
+		   light2.position.y=Math.sin(time1*.5)*40;
+		   light2.position.z=Math.sin(time1*.7)*30;
+		   
+		      light3.position.x=Math.sin(time1*.7)*30;
+		   light3.position.y=Math.sin(time1*.3)*40;
+		   light3.position.z=Math.sin(time1*.5)*30;
+		   
+		   
+		
+         
+
+
+    }
+
+    
+    
+
+
+
+    function onWindowResize()
+    {
+
+     camera.aspect=window.innerWidth/window.innerHeight;
+     camera.updateProjectionMatrix();
+     renderer.setSize(window.innerWidth,window.innerHeight);
+
+
+    }
+    
+
+
+
+
+
+     
+
+
+     function keyboard()
+
+     {
+        document.onkeyup = function (event) {
+	   switch (event.key) {
+        case 'w':
+            camera.rotation.z = camera.rotation.z+.1;
+       
+            break;
+        
+		case 's':
+            camera.rotation.z = camera.rotation.z-.1;
+            
+        
+            break;
+
+        case 'd':
+            camera.rotation.y += .1;
+            //camera.position.z=camera.position.z-.5
+            break;
+        
+		case 'a':
+            camera.rotation.y -= .1;
+            //camera.position.z=camera.position.z+.5
+            //camera.lookAt(scene.position);
+        
+            break;
+
+        case 'x':
+            camera.rotation.x += .1;
+       
+            break;
+        
+		case 'y':
+            camera.rotation.x-= .1;
+            
+        
+            break;
+     
+            
+		
+//	}
+//    camera.updateProjectionMatrix();
+
+    
+    renderer.render(scene, camera);
+
+    
+            }
+        }
+
+     }
+
+
+        window.addEventListener('resize',onWindowResize,false);
+        
+        init();
+        
+        
+        
+        keyboard();
+
+
+        
+
+
+        function CPU() 
+        { 
+        
+
+        const geometry5 = new THREE.BoxGeometry(1.8, 4, 1);
+
+        
+
+        var start = Date.now();
+        uniforms = {
+            u_time: { type: "f", value: (Date.now() - start)/1000 }
+        };
+
+        material5 = new THREE.ShaderMaterial({
+            uniforms: uniforms,
+            vertexShader: document.getElementById('vertexShader').textContent,
+            fragmentShader: document.getElementById('fragmentShader').textContent
+
+        });
+        
+
+        const cube5 = new THREE.Mesh(geometry5, material5);
+        
+        //cpu
+        const geometry4 = new THREE.BoxGeometry( 1.7, 4, 1 );
+        //const material4 = new THREE.MeshBasicMaterial( {color: 0x000000} );
+        const texture2 = new THREE.TextureLoader().load('cpufront.jpg');
+        const material4 = new THREE.MeshPhongMaterial({
+            map: texture2
+        });
+        
+        const cube4 = new THREE.Mesh( geometry4, material4 );
+        cube4.position.x += 5.0;
+        scene.add( cube4 );
+        //cpu
+        //cube5.rotation.x = 45;
+        //cube5.rotation.y = 45;
+        cube5.position.x += 5.0;
+        scene.add(cube5);
+
+        cube6.position.x += 5.0;
+        scene.add(cube6);
+
+        
+
+        function animate1() {
+            requestAnimationFrame(animate1);
+            uniforms["u_time"].value = (Date.now() - start)/1000;
+            //cube4.rotation.y += 0.01;
+            //renderer.render(scene, camera);
+
+            
+        };
+        
+        animate1();
+        
+        //renderer.render(scene, camera);
+
+    }
+
+       CPU();
+        //animate();
+        //CPU();
+        
+    </script>
+    
+</body>
+
+</html>
